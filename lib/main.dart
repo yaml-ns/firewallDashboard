@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'dart:async';
+import 'dart:math';
 
 void main() {
   runApp(FirewallDashboardApp());
@@ -81,7 +83,106 @@ class StatCard extends StatelessWidget {
   }
 }
 
-class TrafficChartCard extends StatelessWidget {
+// class TrafficChartCard extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       elevation: 4,
+//       child: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text('Trafic Réseau (Mock)', style: TextStyle(fontSize: 16)),
+//             SizedBox(height: 16),
+//             Expanded(
+//               child: LineChart(
+//                 LineChartData(
+//                   lineBarsData: [
+//                     LineChartBarData(
+//                       spots: [
+//                         FlSpot(0, 3),
+//                         FlSpot(1, 2),
+//                         FlSpot(2, 5),
+//                         FlSpot(3, 3.1),
+//                         FlSpot(4, 4),
+//                         FlSpot(5, 3),
+//                       ],
+//                       isCurved: true,
+//                       color: Colors.tealAccent,
+//                       barWidth: 2,
+//                     ),
+//                     LineChartBarData(
+//                       spots: [
+//                         FlSpot(0, 2),
+//                         FlSpot(1, 2.5),
+//                         FlSpot(2, 3),
+//                         FlSpot(3, 3.5),
+//                         FlSpot(4, 2.2),
+//                         FlSpot(5, 1.8),
+//                       ],
+//                       isCurved: true,
+//                       color: Colors.tealAccent,
+//                       barWidth: 2,
+//                     )
+//                   ],
+//                   titlesData: FlTitlesData(
+//                     bottomTitles: AxisTitles(
+//                       sideTitles: SideTitles(showTitles: true),
+//                     ),
+//                     leftTitles: AxisTitles(
+//                       sideTitles: SideTitles(showTitles: true),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class TrafficChartCard extends StatefulWidget {
+  @override
+  _TrafficChartCardState createState() => _TrafficChartCardState();
+}
+
+class _TrafficChartCardState extends State<TrafficChartCard> {
+  final List<FlSpot> _data = [];
+  Timer? _timer;
+  int _time = 0;
+  final Random _random = Random();
+
+  @override
+  void initState() {
+    super.initState();
+    _initData();
+    _time = _data.length;
+    _timer = Timer.periodic(Duration(seconds: 1), (_) => _updateData());
+  }
+
+  void _initData() {
+    for (int i = 0; i < 20; i++) {
+      _data.add(FlSpot(i.toDouble(), _random.nextDouble() * 5));
+    }
+  }
+
+  void _updateData() {
+    setState(() {
+      _data.removeAt(0);
+      _time++;
+      _data.add(FlSpot(_time.toDouble(), _random.nextDouble() * 5));
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -91,47 +192,31 @@ class TrafficChartCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Trafic Réseau (Mock)', style: TextStyle(fontSize: 16)),
+            Text('Trafic Réseau (Temps réel)', style: TextStyle(fontSize: 16)),
             SizedBox(height: 16),
             Expanded(
               child: LineChart(
                 LineChartData(
                   lineBarsData: [
                     LineChartBarData(
-                      spots: [
-                        FlSpot(0, 3),
-                        FlSpot(1, 2),
-                        FlSpot(2, 5),
-                        FlSpot(3, 3.1),
-                        FlSpot(4, 4),
-                        FlSpot(5, 3),
-                      ],
+                      spots: _data,
                       isCurved: true,
+                      preventCurveOverShooting: true,
                       color: Colors.tealAccent,
                       barWidth: 2,
+                      dotData: FlDotData(show: false),
                     ),
-                    LineChartBarData(
-                      spots: [
-                        FlSpot(0, 2),
-                        FlSpot(1, 2.5),
-                        FlSpot(2, 3),
-                        FlSpot(3, 3.5),
-                        FlSpot(4, 2.2),
-                        FlSpot(5, 1.8),
-                      ],
-                      isCurved: true,
-                      color: Colors.tealAccent,
-                      barWidth: 2,
-                    )
                   ],
                   titlesData: FlTitlesData(
                     bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: true),
+                      sideTitles: SideTitles(showTitles: false),
                     ),
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(showTitles: true),
                     ),
                   ),
+                  gridData: FlGridData(show: true),
+                  borderData: FlBorderData(show: false),
                 ),
               ),
             ),
@@ -141,7 +226,6 @@ class TrafficChartCard extends StatelessWidget {
     );
   }
 }
-
 class LogsCard extends StatelessWidget {
   final List<String> mockLogs = [
     'Blocage IP: 192.168.1.45',
@@ -180,3 +264,6 @@ class LogsCard extends StatelessWidget {
     );
   }
 }
+
+
+

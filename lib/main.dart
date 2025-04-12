@@ -83,67 +83,6 @@ class StatCard extends StatelessWidget {
   }
 }
 
-// class TrafficChartCard extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       elevation: 4,
-//       child: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text('Trafic Réseau (Mock)', style: TextStyle(fontSize: 16)),
-//             SizedBox(height: 16),
-//             Expanded(
-//               child: LineChart(
-//                 LineChartData(
-//                   lineBarsData: [
-//                     LineChartBarData(
-//                       spots: [
-//                         FlSpot(0, 3),
-//                         FlSpot(1, 2),
-//                         FlSpot(2, 5),
-//                         FlSpot(3, 3.1),
-//                         FlSpot(4, 4),
-//                         FlSpot(5, 3),
-//                       ],
-//                       isCurved: true,
-//                       color: Colors.tealAccent,
-//                       barWidth: 2,
-//                     ),
-//                     LineChartBarData(
-//                       spots: [
-//                         FlSpot(0, 2),
-//                         FlSpot(1, 2.5),
-//                         FlSpot(2, 3),
-//                         FlSpot(3, 3.5),
-//                         FlSpot(4, 2.2),
-//                         FlSpot(5, 1.8),
-//                       ],
-//                       isCurved: true,
-//                       color: Colors.tealAccent,
-//                       barWidth: 2,
-//                     )
-//                   ],
-//                   titlesData: FlTitlesData(
-//                     bottomTitles: AxisTitles(
-//                       sideTitles: SideTitles(showTitles: true),
-//                     ),
-//                     leftTitles: AxisTitles(
-//                       sideTitles: SideTitles(showTitles: true),
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class TrafficChartCard extends StatefulWidget {
   @override
   _TrafficChartCardState createState() => _TrafficChartCardState();
